@@ -32,7 +32,7 @@ smpool *smpool_new()
 {
     smpool *pool = (smpool *)malloc(sizeof(smpool));
     pool->length = 10;
-    pool->addr = (uintptr_t *)calloc(sizeof(uintptr_t), pool->length);
+    pool->addr = (uintptr_t *)calloc(pool->length, sizeof(uintptr_t));
     pool->count = 0;
     pool->allocated = 0;
     pool->freed = 0;
@@ -59,7 +59,7 @@ void smpool_append(smpool *pool, void *ptr)
     if (pool->count >= pool->length)
     {
         pool->length += 10;
-        pool->addr = (uintptr_t *)realloc(pool->addr, pool->length);
+        pool->addr = (uintptr_t *)realloc(pool->addr, pool->length * sizeof(uintptr_t));
         for (int i = pool->length - 10; i < pool->length; i++)
         {
             pool->addr[i] = 0;
