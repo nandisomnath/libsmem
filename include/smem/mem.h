@@ -5,7 +5,7 @@
 // signatures
 
 // This is for global use one per library instance
-const smem_pool *smem_pool_global = smem_pool_new();
+smem_pool *const smem_pool_global = smem_pool_new();
 
 void *smem_alloc(size_t size)
 {
