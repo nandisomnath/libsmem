@@ -6,7 +6,7 @@
 // we cannot use own malloc here
 #include <malloc.h>
 
-struct smem_pool
+typedef struct smpool
 {
     // stores an array of memory address.
     // These are added like an array lifo order.
@@ -24,12 +24,13 @@ struct smem_pool
 
     // how many address get freed
     int freed;
-};
+} smpool;
+
 
 // returns new smem_pool
-smem_pool *smem_pool_new()
+smpool *smpool_new()
 {
-    smem_pool *pool = (smem_pool *)malloc(sizeof(smem_pool));
+    smpool *pool = (smpool *)malloc(sizeof(smpool));
     pool->length = 10;
     pool->addr = (uintptr_t *)calloc(sizeof(uintptr_t), pool->length);
     pool->count = 0;
@@ -38,7 +39,7 @@ smem_pool *smem_pool_new()
 }
 
 // it frees the pool
-void smeme_pool_destroy(smem_pool *pool)
+void smpool_destroy(smpool *pool)
 {
     for (int i = 0; i < pool->count; i++)
     {
@@ -53,7 +54,7 @@ void smeme_pool_destroy(smem_pool *pool)
 }
 
 // it adds new pointer to mem_pool
-void smem_pool_append(smem_pool *pool, void *ptr)
+void smpool_append(smpool *pool, void *ptr)
 {
     if (pool->count >= pool->length)
     {
@@ -70,15 +71,18 @@ void smem_pool_append(smem_pool *pool, void *ptr)
 }
 
 // it frees the pointer from the pool
-void smem_pool_remove(smem_pool *pool, void *ptr)
+void smpool_remove(smpool *pool, void *ptr)
 {
     for (int i = 0; i < pool->count; i++)
     {
         if (pool->addr[i] == (uintptr_t)ptr)
         {
             pool->addr[i] = 0;
-            pool->addr[i] = pool->addr[pool->count - 1];
-            pool->addr[pool->count - 1] = 0;
+            if (i != pool->count-1)
+            {
+                pool->addr[i] = pool->addr[pool->count - 1];
+                pool->addr[pool->count - 1] = 0;
+            }
             pool->count--;
         }
     }
