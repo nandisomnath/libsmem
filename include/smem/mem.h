@@ -15,6 +15,7 @@ void *smrealloc(smpool* pool, void *ptr, size_t size)
 {
     void *mem = realloc(ptr, size);
     smpool_append(pool, mem);
+    smpool_remove(pool, ptr);
     return mem;
 }
 void smfree(smpool* pool, void *ptr)
