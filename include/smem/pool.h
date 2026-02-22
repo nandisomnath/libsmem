@@ -26,9 +26,14 @@ typedef struct smpool
     int freed;
 } smpool;
 
+// global pool for smpool
+static smpool * smem_gpool = NULL;
+
 
 // returns new smem_pool
-smpool *smpool_new()
+// if flag is 1 then creates new smpool struct
+// otherwise it will init global smem_pool
+smpool *smpool_new(int flag)
 {
     smpool *pool = (smpool *)malloc(sizeof(smpool));
     pool->length = 10;
@@ -36,6 +41,11 @@ smpool *smpool_new()
     pool->count = 0;
     pool->allocated = 0;
     pool->freed = 0;
+    if (flag == 1)
+    {
+        return pool;
+    }
+    smem_gpool = pool;
 }
 
 // it frees the pool
