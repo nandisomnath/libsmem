@@ -6,28 +6,28 @@
 
 
 
-void *smalloc(smpool* pool, size_t size)
+void *smalloc(size_t size)
 {
     void *mem = malloc(size);
-    smpool_append(pool, mem);
+    smpool_append(mem);
     return mem;
 }
 
-void *smrealloc(smpool* pool, void *ptr, size_t size)
+void *smrealloc(void *ptr, size_t size)
 {
     void *mem = realloc(ptr, size);
-    smpool_append(pool, mem);
-    smpool_remove(pool, ptr);
+    smpool_append(mem);
+    smpool_remove(ptr);
     return mem;
 }
-void smfree(smpool* pool, void *ptr)
+void smfree(void *ptr)
 {
     free(ptr);
-    smpool_remove(pool, ptr);
+    smpool_remove(ptr);
 }
-void *smcalloc(smpool* pool, size_t size, size_t len)
+void *smcalloc(size_t size, size_t len)
 {
     void *mem = calloc(size, len);
-    smpool_append(pool, mem);
+    smpool_append(mem);
     return mem;
 }

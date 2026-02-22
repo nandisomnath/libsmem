@@ -33,7 +33,7 @@ static smpool * smem_gpool = NULL;
 // returns new smem_pool
 // if flag is 1 then creates new smpool struct
 // otherwise it will init global smem_pool
-smpool *smpool_new(int flag)
+void smpool_init()
 {
     smpool *pool = (smpool *)malloc(sizeof(smpool));
     pool->length = 10;
@@ -41,16 +41,13 @@ smpool *smpool_new(int flag)
     pool->count = 0;
     pool->allocated = 0;
     pool->freed = 0;
-    if (flag == 1)
-    {
-        return pool;
-    }
     smem_gpool = pool;
 }
 
 // it frees the pool
-void smpool_destroy(smpool *pool)
+void smpool_destroy()
 {
+    smpool* pool = smem_gpool;
     for (int i = 0; i < pool->count; i++)
     {
         if (pool->addr[i] != 0x0)
@@ -64,8 +61,9 @@ void smpool_destroy(smpool *pool)
 }
 
 // it adds new pointer to mem_pool
-void smpool_append(smpool *pool, void *ptr)
+void smpool_append(void *ptr)
 {
+    smpool *pool = smem_gpool;
     if (pool->count >= pool->length)
     {
         pool->length += 10;
@@ -81,8 +79,9 @@ void smpool_append(smpool *pool, void *ptr)
 }
 
 // it frees the pointer from the pool
-void smpool_remove(smpool *pool, void *ptr)
+void smpool_remove(void *ptr)
 {
+    smpool *pool = smem_gpool;
     for (int i = 0; i < pool->count; i++)
     {
         if (pool->addr[i] == (uintptr_t)ptr)
