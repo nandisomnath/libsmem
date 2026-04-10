@@ -11,7 +11,12 @@
  * @param size Number of bytes to allocate.
  * @return Pointer to the allocated memory, or NULL if allocation fails.
  */
-void *smalloc(size_t size);
+void *smalloc(size_t size)
+{
+    void *mem = malloc(size);
+    smpool_append(mem);
+    return mem;
+}
 
 /**
  * @brief Reallocates memory and updates the global pool.
@@ -22,7 +27,13 @@ void *smalloc(size_t size);
  * @param size New size in bytes.
  * @return Pointer to the reallocated memory, or NULL if reallocation fails.
  */
-void *smrealloc(void *ptr, size_t size);
+void *smrealloc(void *ptr, size_t size)
+{
+    void *mem = realloc(ptr, size);
+    smpool_append(mem);
+    smpool_remove(ptr);
+    return mem;
+}
 
 /**
  * @brief Frees memory and removes it from the global pool.
@@ -31,7 +42,11 @@ void *smrealloc(void *ptr, size_t size);
  *
  * @param ptr Pointer to the memory to free.
  */
-void smfree(void *ptr);
+void smfree(void *ptr)
+{
+    free(ptr);
+    smpool_remove(ptr);
+}
 
 /**
  * @brief Allocates and initializes memory to zero, adding it to the global pool.
@@ -42,4 +57,9 @@ void smfree(void *ptr);
  * @param len Number of elements.
  * @return Pointer to the allocated memory, or NULL if allocation fails.
  */
-void *smcalloc(size_t size, size_t len);
+void *smcalloc(size_t size, size_t len)
+{
+    void *mem = calloc(size, len);
+    smpool_append(mem);
+    return mem;
+}
