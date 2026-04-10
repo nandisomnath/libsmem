@@ -26,6 +26,27 @@ make
 make install
 ```
 
+## CMake Integration
+
+To include libsmem as a dependency in your CMake project using FetchContent:
+
+```cmake
+include(FetchContent)
+
+FetchContent_Declare(
+    libsmem
+    GIT_REPOSITORY <repository-url>
+    GIT_TAG <tag>  # e.g., v0.0.1 or main
+)
+
+FetchContent_MakeAvailable(libsmem)
+
+# Link to your target
+target_link_libraries(your_target libsmem)
+```
+
+This will make the libsmem headers available to your project.
+
 ## Usage
 
 Include the headers in your C code:
