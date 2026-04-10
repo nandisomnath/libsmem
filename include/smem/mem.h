@@ -22,6 +22,7 @@ void *smalloc(size_t size)
  * @brief Reallocates memory and updates the global pool.
  *
  * This function wraps realloc to resize memory and updates the pool tracking.
+ * If the pointer doesn't change, avoids unnecessary pool operations.
  *
  * @param ptr Pointer to the memory to reallocate.
  * @param size New size in bytes.
@@ -30,8 +31,10 @@ void *smalloc(size_t size)
 void *smrealloc(void *ptr, size_t size)
 {
     void *mem = realloc(ptr, size);
-    smpool_append(mem);
-    smpool_remove(ptr);
+    if (mem != ptr) {
+        smpool_append(mem);
+        smpool_remove(ptr);
+    }
     return mem;
 }
 

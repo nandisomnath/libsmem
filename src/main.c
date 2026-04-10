@@ -35,9 +35,13 @@ int main(int argc, char const *argv[])
     printf("\n");
 
     // Print all addresses in the pool
-    for (int i = 0; i < smem_gpool->count; i++)
+    printf("Pool count: %d\n", smem_gpool->set->count);
+    for (int i = 0; i < smem_gpool->set->size; i++)
     {
-        printf("addr: %lu\n", smem_gpool->addr[i]);
+        if (smem_gpool->set->table[i] != 0)
+        {
+            printf("addr: %lu\n", smem_gpool->set->table[i]);
+        }
     }
 
     // Free the allocated memory
