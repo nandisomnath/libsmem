@@ -72,8 +72,8 @@ make test
 
 ## License
 
-[Specify license here]
+See [LICENSE](LICENSE) for details.
 
 ## Contributing
 
-[Add contribution guidelines]
+See [CONTRIBUTING.md](CONTRIBUTING.md) for contribution guidelines.
